@@ -1,8 +1,6 @@
-package httpserver
+package middlewares
 
 import "net/http"
-
-const tooManyRequests int = 429
 
 // CheckExceedTheLimit validates amount of requests against datasource and returns true if request is allowed.
 type CheckExceedTheLimit func(clientIP string) bool
@@ -13,7 +11,7 @@ func RateLimit(h http.Handler, validationFunc CheckExceedTheLimit) http.HandlerF
 	return func(w http.ResponseWriter, r *http.Request) {
 		remoteIP := r.Header.Get("REMOTE_ADDR")
 		if validationFunc(remoteIP) {
-			w.WriteHeader(tooManyRequests)
+			w.WriteHeader(http.StatusTooManyRequests)
 			// it then returns, not passing the request down the chain
 		} else {
 			h.ServeHTTP(w, r)

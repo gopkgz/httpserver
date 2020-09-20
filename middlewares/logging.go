@@ -1,4 +1,4 @@
-package httpserver
+package middlewares
 
 import (
 	"log"
@@ -39,6 +39,6 @@ func LogMiddleware(handler http.Handler) http.Handler {
 		finishTime := time.Now()
 		elapsedTime := finishTime.Sub(startTime)
 
-		log.Printf("%s %s %s %d (%d bytes in %.4fms) by %s agent %s", r.Method, r.URL, r.Proto, wrapper.status, wrapper.responseBytes, elapsedTime.Seconds()*1000, clientIP, r.UserAgent())
+		log.Printf("[INFO] %s %s %s %d (%d bytes in %.4fms) by %s agent %s", r.Method, r.URL, r.Proto, wrapper.status, wrapper.responseBytes, elapsedTime.Seconds()*1000, clientIP, r.UserAgent())
 	})
 }
